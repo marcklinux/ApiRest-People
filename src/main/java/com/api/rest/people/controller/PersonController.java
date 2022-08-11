@@ -50,7 +50,7 @@ public class PersonController {
         return new ResponseEntity<>(response,HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePersonById(@PathVariable Long id){
         response.clear();
         personSevice.deletePersonById(id);
