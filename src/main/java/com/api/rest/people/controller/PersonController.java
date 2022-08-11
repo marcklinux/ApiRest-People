@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class PersonController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> savePerson(@RequestBody Person person){
+    public ResponseEntity<?> savePerson(@Valid @RequestBody Person person){
         response.clear();
         personSevice.savePerson(person);
         response.put("message","save person successfully");
