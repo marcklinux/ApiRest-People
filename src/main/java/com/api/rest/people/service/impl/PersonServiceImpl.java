@@ -4,10 +4,12 @@ import com.api.rest.people.exception.NotFoundException;
 import com.api.rest.people.model.Person;
 import com.api.rest.people.repository.PersonRepository;
 import com.api.rest.people.service.PersonSevice;
+import com.api.rest.people.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 
 @Service
@@ -16,10 +18,13 @@ public class PersonServiceImpl implements PersonSevice {
     @Autowired
     private PersonRepository personRepository;
 
+    @Autowired
+    private MessageUtil messageUtil;
+
     @Override
     public Person getPersonById(Long id) {
         return personRepository.findById(id).orElseThrow(
-                ()-> new NotFoundException("Person Not Found")
+                ()-> new NotFoundException(messageUtil.getMessage("notFound",null, Locale.getDefault()))
         );
     }
 
@@ -38,7 +43,7 @@ public class PersonServiceImpl implements PersonSevice {
     @Override
     public void updatePerson(Long id, Person person) {
         Person person1 = personRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Person Not Found")
+                () -> new NotFoundException(messageUtil.getMessage("notFound",null, Locale.getDefault()))
         );
 
         person1.setName(person.getName());
@@ -49,7 +54,7 @@ public class PersonServiceImpl implements PersonSevice {
     @Override
     public void deletePersonById(Long id) {
         Person person1 = personRepository.findById(id).orElseThrow(
-                ()-> new NotFoundException("Person Not Found")
+                ()-> new NotFoundException(messageUtil.getMessage("notFound",null, Locale.getDefault()))
         );
         personRepository.deleteById(id);
     }
