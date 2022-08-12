@@ -1,6 +1,8 @@
 package com.api.rest.people.service.impl;
 
+import com.api.rest.people.dto.PersonDto;
 import com.api.rest.people.exception.NotFoundException;
+import com.api.rest.people.mapper.PersonMapper;
 import com.api.rest.people.model.Person;
 import com.api.rest.people.repository.PersonRepository;
 import com.api.rest.people.service.PersonSevice;
@@ -21,11 +23,14 @@ public class PersonServiceImpl implements PersonSevice {
     @Autowired
     private MessageUtil messageUtil;
 
+    @Autowired
+    private PersonMapper personMapper;
+
     @Override
-    public Person getPersonById(Long id) {
-        return personRepository.findById(id).orElseThrow(
+    public PersonDto getPersonById(Long id) {
+        return personMapper.toDto(personRepository.findById(id).orElseThrow(
                 ()-> new NotFoundException(messageUtil.getMessage("notFound",null, Locale.getDefault()))
-        );
+        ));
     }
 
     @Override
@@ -36,18 +41,18 @@ public class PersonServiceImpl implements PersonSevice {
     }
 
     @Override
-    public void savePerson(Person person) {
+    public void savePerson(PersonDto personDto) {
+        Person person = personMapper.toEntity(personDto);
         personRepository.save(person);
     }
 
     @Override
-    public void updatePerson(Long id, Person person) {
+    public void updatePerson(Long id, PersonDto personDto) {
         Person person1 = personRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("notFound",null, Locale.getDefault()))
         );
 
-        person1.setName(person.getName());
-        person1.setLastName(person.getLastName());
+       personMapper.updateEntity(personDto, person1);
         personRepository.save(person1);
     }
 
