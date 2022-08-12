@@ -1,15 +1,16 @@
 package com.api.rest.people.service;
 
+import com.api.rest.people.dto.PersonDto;
 import com.api.rest.people.model.Person;
 
 import java.util.List;
 
 public interface PersonSevice {
 
-    Person getPersonById(Long id);
+    PersonDto getPersonById(Long id);
     List<Person> getAllPerson();
-    void savePerson(Person person);
-    void updatePerson(Long id,Person person);
+    void savePerson(PersonDto personDto);
+    void updatePerson(Long id,PersonDto personDto);
     void deletePersonById(Long id);
 
 }
